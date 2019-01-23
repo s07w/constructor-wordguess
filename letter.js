@@ -1,27 +1,35 @@
-// letter constructor
-class Letter {
-    constructor(letter) {
-        this.letter = letter;
-        this.placeholder = "_";
-        this.status = false;
-    }
+// Compares user's guess to the correct answer, and displays the result 
 
-    //checks every letter in word and returns letter or underscore
-    checkGuess() {
-        if (this.status) {
-            return this.letter;
-        }
-        else {
-            return this.placeholder;
+function Letter(answer) {
+    this.answer = answer;
+    this.guessed = false;
+    this.returnLetter = function () {
+        // Returns letter if guess is correct, otherwise returns "_".
+        if (this.guessed == true) {
+            return answer;
+        } else {
+            return "_";
         }
     }
 
-    // takes a letter as a guess and checks it against each letter of the word
-    takeGuess() {
-        if (this.letter === guess) {
-            this.status = true;
+    this.checkGuess = function(guess) {
+        // This returns a value depending on whether the user's guess is correct
+        // Updates status of letter (guessed/not guessed)
+        if (this.guessed == true) {
+            this.guessed = true;
+            return false;
+        } else if (correctLetter == " ") {
+            this.guessed = true;
+            return false;
+        } else if (guess == correctLetter) {
+            this.guessed = true;
+            return true;
+        } else {
+            this.guessed = false;
+            return false;
         }
-    }
+    };
+
 }
 
 module.exports = Letter;

@@ -1,34 +1,52 @@
-var Letter = require('/letter.js');
+//Letter constructor
 
+var Letter = require("./letter.js");
+
+// Word constructor
 function Word(word) {
-    this.constructWord = function(word) {
-        var temp = [];
-        for (var i = 0; i < word.length; i++) {
-            var currentChar = word[i];
-            var currentLetter = new Letter (currentChar);
-            temp.push(currentLetter);
+    //Word and array letters in word
+    this.word = word;
+    this.letterArray = word.split("");
+    this.letterObjectArray = [];
+    this.currentGuess = [];
+    this.res = false;
+
+    this.makeWord = function() { 
+        // runs Letter constructor for each letter of word
+        for (var i = 0; i < this.letterArray.length; i++) {
+            this.letterObjectArray[i] = new Letter(this.letterArray[i]);
         }
-        return temp;
+    };
+
+    this.displayGuess = function(userGuess) {
+        // Triggers result function for guessedRight in index.js
+        var guessedRight = false;
+
+        // Updates and displays the user's current guesses
+        for (var i = 0; i < this.letterArray.length; i++) {
+            // checks user's guess
+            guessedRight = false;
+
+            // Updates and displays the user's current guessing progress
+            for (var i = 0; i < this.letterArray.length; i++) {
+                //Checks if user guess is correct
+                guessedRight = this.letterObjectArray[i].returnLetter();
+            }
+
+            // If guess is correct, results are invoked.
+            if (guessedRight == true) {
+                this.res = true;
+            }
+        }
     }
 
-    this.word = this.constructWord(word);
+    // Results logic
 
-    this.display = function() {
-        var displayWord = "";
-        for (var i = 0; i < this.word.length; i++) {
-            var currentLetter = this.word[i];
-            displayWord += currentLetter.display() + " ";
-        }
-        console.log(displayWord);
+    if(this.res == true) {
+        //User guessed correct letter
+        console.log("Correct!");
+        console.log("Current guess: " + this.currentGuess.join(" ") + "\n");
+        return false;
     }
-    this.checkLetter = function(ltr) {
-        for (var i = 0; i < this.word.length; i++) {
-            var currentLetter = this.word[i];
-            console.log(currentLetter);
-            currentLetter.checkGuess(ltr);
-        }
-        return this.display;
-    }
-}
 
-module.exports = Word;
+};
