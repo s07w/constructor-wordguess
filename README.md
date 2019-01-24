@@ -10,7 +10,7 @@ This assignment required (no pun intended) the use of different required javascr
 * If the user successfully chose a correct letter, it will replace the underscore. 
 * The user has 15 guesses to correctly guess the word. 
 
-![GIF of demo](https://github.com/s07w/constructor-wordguess/blob/master/demo.gif)
+![GIF of demo](https://raw.githubusercontent.com/s07w/constructor-wordguess/master/demo.gif)
 
 ## Challenges
 
