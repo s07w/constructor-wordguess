@@ -1,1 +1,2 @@
-# constructorhangman
+# constructor-wordguess
+
