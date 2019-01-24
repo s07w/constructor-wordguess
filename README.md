@@ -2,6 +2,8 @@
 
 This assignment required (no pun intended) the use of different required javascript files in node to create a word guess game. It also uses the Inquirer NPM to prompt the user to provide inputs to play the game. This game is guitar-brand themed with the ostensible goal of choosing which brand of guitar the user will play that night.
 
+[Link to repo](https://github.com/s07w/constructor-wordguess "Link to repo")
+
 ## How the game works
 * The user is prompted to enter a letter after the game loads. Then, the results will be displayed. 
 * Hidden letters that have yet to be guessed are represented as underscores. 
