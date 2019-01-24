@@ -1,91 +1,69 @@
-// Imports Word constructor from word.js
+// npm for Inquire, require for Word and Letter constructors
 
-var Word = require("./word.js");
+var Inquirer = require("inquirer");
+var Word = require("./word");
+var Letter = require("./letter");
 
-// Require for inquirer npm
-var inquirer = require("inquirer");
+// Randomly selects a word and uses the Word constructor to store it
+// Prompts the user for each guess and keeps track of the user's remaining guesses
 
-// Global variables
+var letterGuessedArray = [];
+var previouslyGuessed = [];
+var numberGuesses = 15;
 
-var alreadyGuessed = false; // true if user already guessed this letter
-var chosenWord; // randomly selected word the user will guess
-var guessesLeft = 10; 
-var guessedLetters = ["You have guessed: "];
-var guessedRight = false; // true if user guesses correct letter
-var userGuess;
-var win = false;
-var wordChoices = ["gibson", "fender", "harmony", "silvertone", "kay", "g and l", "esp", "epiphone", "ibanez"];
-var wordMatches = true; // true if user guesses word
+var wordBank = ["fender", "gibson", "ibanez", "epiphone", "squier", "esp", "kramer", "jackson", "washburn", "reverend", "harmony", "kay", "silvertone"];
+var randomIndex = Math.floor(Math.random() * wordBank.length);
+var randomWord = wordBank[randomIndex];
 
-runGame();
-
-// game logic
-
-function runGame() {
-    console.log("Welcome! This game will choose the right guitar for you.");
-
-    var word = wordChoices[Math.floor(Math.random() * wordChoices.length)];
-    //console.log(word);
-
-    //runs Word constructor
-    chosenWord = new Word(word);
-    chosenWord.makeWord();
-
-    //displays word as underscores
-    var newWord = [];
-    for (var i = 0; i < chosenWord.letterArray.length; i++) {
-        if (chosenWord.letterArray[i] == " ") {
-            newWord.push(" ");
-        } else {
-            newWord.push("_");
-        }
-    }
-    console.log(blankWord.join(" ")+ "\n");
-
-    // Prompts user to guess a letter
-    promptUser();
+for(var i = 0; i < randomWord.length; i++) {
+    letterGuessedArray.push(new Letter(randomWord.charAt(i)));
 }
 
-function promptUser() {
-    inquirer.prompt([
-        {
-            message: "Guess a letter!",
-            name: "userguess"
-        }
-    ]).then(function(answer) {
-        // Convert to lowercase
-        userguess = answer.userguess.toLowerCase();
+var currentWord = new Word(letterGuessedArray);
 
-        // Display guessed letter
-        console.log("You guessed: " + userguess);
+var queryUser = function() {
+    if (numberGuesses > 0) {
+        var wordDisplay = currentWord.show();
 
-        // checks if this letter was already guessed
-        for (var i = 0; i < guessedLetters.length; i++) {
-            if (userguess = guessedLetters[i]) {
-                console.log("You've already guessed this letter");
-                alreadyGuessed = true;
-                break;
+        console.log("You have " + numberGuesses + " guesses remaining.");
+
+        Inquirer.prompt([
+            {
+                name: "letter",
+                message: "Choose a letter to see what guitar you're going to use for the gig tonight!"
             }
-        }
+        ]).then(function(userInput){
+            
+            var guessedLetter = userInput.letter.toLowerCase();
 
-        // Value corresponds to res from word.js
-        guessedRIght = chosenWord.showGuess(userguess);
+            var alreadyGuessed = false;
+            for (var i = 0; i < previouslyGuessed.length; i++) {
+                if (guessedLetter === previouslyGuessed[i]) {
+                    alreadyGuessed = true;
+                    break;
+                }
+            }
 
-        //updates guessed letter array and remaining guesses
-        if (alreadyGuessed == true) {
-            // user already guessed this letter
-            alreadyGuessed = false;
-        } else if (guessedRight == false) {
-            //user guessed incorrect letter
-            guessesLeft--;
-            guessedLetters.push(userguess);
-        } else {
-            // user has guessed a (new) correct letter
-            guessedLetters.push(userguess);
-            guessedRight = false;
-        }
+            if(alreadyGuessed) {
+                console.log("This letter was already guessed.");
+            } else {
+                numberGuesses--;
+                previouslyGuessed.push(guessedLetter);
+                currentWord.trueCharacter(guessedLetter);
+            }
 
-        // sort already guessed letters alphabetically and display them
-    })
-}
+            if(currentWord.finishedWord()) {
+                console.log("♫ ♪ ♫ ♪ ♫ ♪ ♫ ♪ ♫ ♪ ♫ ♪ ♫ ♪ ♫ ♪ ♫ ♪ ♫ ♪ ♫ ♪ ♫ ♪ ♫ ♪ ♫ ♪ ♫ ♪ ♫")
+                console.log("\nCongrats, you guessed the word correctly! Enjoy your new axe!");
+                console.log("\n♫ ♪ ♫ ♪ ♫ ♪ ♫ ♪ ♫ ♪ ♫ ♪ ♫ ♪ ♫ ♪ ♫ ♪ ♫ ♪ ♫ ♪ ♫ ♪ ♫ ♪ ♫ ♪ ♫ ♪ ♫")
+                return;
+            }
 
+            queryUser();
+        });
+    } else {
+        console.log("You've used all your guesses.")
+    }
+};
+
+queryUser();w

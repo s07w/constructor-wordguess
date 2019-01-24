@@ -1,35 +1,28 @@
-// Compares user's guess to the correct answer, and displays the result 
+// Letter constructor
 
-function Letter(answer) {
-    this.answer = answer;
-    this.guessed = false;
-    this.returnLetter = function () {
-        // Returns letter if guess is correct, otherwise returns "_".
-        if (this.guessed == true) {
-            return answer;
-        } else {
-            return "_";
-        }
-    }
-
-    this.checkGuess = function(guess) {
-        // This returns a value depending on whether the user's guess is correct
-        // Updates status of letter (guessed/not guessed)
-        if (this.guessed == true) {
-            this.guessed = true;
-            return false;
-        } else if (correctLetter == " ") {
-            this.guessed = true;
-            return false;
-        } else if (guess == correctLetter) {
-            this.guessed = true;
-            return true;
-        } else {
-            this.guessed = false;
-            return false;
-        }
-    };
-
-}
+var Letter = function(character) {
+	this.character = character;
+	// A boolean value that stores whether that letter has been guessed yet
+	this.letterCorrect = false;
+	this.showCharacter = function () {
+		// A function that returns the underlying character if the letter has been guessed, or a placeholder
+		//  (like an underscore) if the letter has not been guessed
+		if(this.letterCorrect) {
+			return this.character;
+		} else {
+			return "_";
+		}
+	};
+	// A function that takes a character as an argument and checks it against the underlying character, 
+	// updating the stored boolean value to true if it was guessed correctly
+	this.trueCharacter = function(guessCharacter) {
+		if(guessCharacter == this.character) {
+			this.letterCorrect = true;
+		}
+	};
+	this.guessedStatus = function() {
+		return this.letterCorrect;
+	};
+};
 
 module.exports = Letter;

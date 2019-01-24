@@ -1,52 +1,37 @@
-//Letter constructor
-
-var Letter = require("./letter.js");
-
 // Word constructor
-function Word(word) {
-    //Word and array letters in word
-    this.word = word;
-    this.letterArray = word.split("");
-    this.letterObjectArray = [];
-    this.currentGuess = [];
-    this.res = false;
 
-    this.makeWord = function() { 
-        // runs Letter constructor for each letter of word
-        for (var i = 0; i < this.letterArray.length; i++) {
-            this.letterObjectArray[i] = new Letter(this.letterArray[i]);
-        }
-    };
+var Letter = require("./letter");
 
-    this.displayGuess = function(userGuess) {
-        // Triggers result function for guessedRight in index.js
-        var guessedRight = false;
+var Word = function(letters) {
+	this.letters = letters;
 
-        // Updates and displays the user's current guesses
-        for (var i = 0; i < this.letterArray.length; i++) {
-            // checks user's guess
-            guessedRight = false;
+	// An array of new Letter objects representing the letters of the underlying word
+	this.show = function() {
+		var letterString = "";
+		for (var i = 0; i < this.letters.length; i++) {
+			letterString += this.letters[i].showCharacter() + " ";
+		}
+		return console.log(letterString);
+	};
 
-            // Updates and displays the user's current guessing progress
-            for (var i = 0; i < this.letterArray.length; i++) {
-                //Checks if user guess is correct
-                guessedRight = this.letterObjectArray[i].returnLetter();
-            }
+	// A function that returns a string representing the word. This should call the function on each letter object
+	//(the first function defined in Letter.js) that displays the character or an underscore and concatenate those together.
+	this.trueCharacter = function(characterGuessed) {
+		for (var i = 0; i < this.letters.length; i++) {
+			this.letters[i].trueCharacter(characterGuessed);
+		}
+	};
 
-            // If guess is correct, results are invoked.
-            if (guessedRight == true) {
-                this.res = true;
-            }
-        }
-    }
-
-    // Results logic
-
-    if(this.res == true) {
-        //User guessed correct letter
-        console.log("Correct!");
-        console.log("Current guess: " + this.currentGuess.join(" ") + "\n");
-        return false;
-    }
-
+	// A function that takes a character as an argument and calls the guess function on each letter object 
+	//(the second function defined in Letter.js)
+	this.finishedWord = function() {
+		for (var i = 0; i < this.letters.length; i++) {
+			if (!this.letters[i].guessedStatus()) {
+				return false;
+			}
+		}
+		return true;
+	};
 };
+
+module.exports = Word;
