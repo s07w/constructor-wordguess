@@ -1,31 +1,31 @@
 // npm for Inquire, require for Word and Letter constructors
-
 var Inquirer = require("inquirer");
 var Word = require("./word");
 var Letter = require("./letter");
 
-// Randomly selects a word and uses the Word constructor to store it
-// Prompts the user for each guess and keeps track of the user's remaining guesses
-
-var letterGuessedArray = [];
+// Variables to store arrays (both for guessed and already guessed) and guesses counter.
+var guessedLetterArray = [];
 var previouslyGuessed = [];
-var numberGuesses = 15;
+var totalGuesses = 15;
 
+// Word bank and Math methods to randomize selection.
 var wordBank = ["fender", "gibson", "ibanez", "epiphone", "squier", "esp", "kramer", "jackson", "washburn", "reverend", "harmony", "kay", "silvertone"];
 var randomIndex = Math.floor(Math.random() * wordBank.length);
 var randomWord = wordBank[randomIndex];
 
+// Randomly selects a word and uses the Word constructor to store it
 for(var i = 0; i < randomWord.length; i++) {
-    letterGuessedArray.push(new Letter(randomWord.charAt(i)));
+    guessedLetterArray.push(new Letter(randomWord.charAt(i)));
 }
 
-var currentWord = new Word(letterGuessedArray);
+var currentWord = new Word(guessedLetterArray);
 
+// Prompts the user for each guess and keeps track of the user's remaining guesses
 var queryUser = function() {
-    if (numberGuesses > 0) {
+    if (totalGuesses > 0) {
         var wordDisplay = currentWord.show();
 
-        console.log("You have " + numberGuesses + " guesses remaining.");
+        console.log("You have " + totalGuesses + " guesses remaining.");
 
         Inquirer.prompt([
             {
@@ -47,9 +47,9 @@ var queryUser = function() {
             if(alreadyGuessed) {
                 console.log("This letter was already guessed.");
             } else {
-                numberGuesses--;
+                totalGuesses--;
                 previouslyGuessed.push(guessedLetter);
-                currentWord.trueCharacter(guessedLetter);
+                currentWord.trueChar(guessedLetter);
             }
 
             if(currentWord.finishedWord()) {
@@ -66,4 +66,4 @@ var queryUser = function() {
     }
 };
 
-queryUser();w
+queryUser();

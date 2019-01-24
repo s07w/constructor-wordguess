@@ -7,18 +7,18 @@ var Word = function(letters) {
 
 	// An array of new Letter objects representing the letters of the underlying word
 	this.show = function() {
-		var letterString = "";
+		var letterStr = "";
 		for (var i = 0; i < this.letters.length; i++) {
-			letterString += this.letters[i].showCharacter() + " ";
+			letterStr += this.letters[i].showChar() + " ";
 		}
-		return console.log(letterString);
+		return console.log(letterStr);
 	};
 
 	// A function that returns a string representing the word. This should call the function on each letter object
 	//(the first function defined in Letter.js) that displays the character or an underscore and concatenate those together.
-	this.trueCharacter = function(characterGuessed) {
+	this.trueChar = function(characterGuessed) {
 		for (var i = 0; i < this.letters.length; i++) {
-			this.letters[i].trueCharacter(characterGuessed);
+			this.letters[i].trueChar(characterGuessed);
 		}
 	};
 
